@@ -61,7 +61,7 @@ module.exports = (app) => {
       username: rUsername,
       password: rPassword,
       fyncid: "not have data",
-      item: { },
+      item: { wooden_Sword: 1},
       quest: [{}],
       lastAuthentication: Date.now(),
     });
