@@ -55,42 +55,13 @@ module.exports = (app) => {
       return;
     }
 
-    // Define the favorite and disliked foods for the new account
-    const foodTypes = [
-      "spicy",
-      "fried",
-      "sweet",
-      "bread",
-      "meat",
-      "vegetable",
-      "fruit",
-    ];
-    const favoriteFoods = [
-      foodTypes.shift(),
-      foodTypes.shift(),
-      foodTypes.shift(),
-    ];
-    const dislikedFoods = [foodTypes.pop(), foodTypes.pop(), foodTypes.pop()];
-
     // Create a new account with the given data and default values for other fields
     const newAccount = new Account({
       email: rEmail,
       username: rUsername,
       password: rPassword,
       fyncid: "not have data",
-      wOof: {
-        favoritef: favoriteFoods,
-        dislike: dislikedFoods,
-        type: "",
-        Level: 1,
-        Exp: 0,
-        stat: {
-          HP: 0,
-          SPD: 0,
-          ATK: 0,
-        },
-      },
-      item: { rock: 1, gun: 3 },
+      item: { },
       quest: [{}],
       lastAuthentication: Date.now(),
     });

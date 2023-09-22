@@ -8,7 +8,6 @@ const accountSchema = new Schema({
     tag: Array,
     item: Object,
     pending: Object,
-    wOof: Object,
     fyncid: String,
     quest: Array,
     weeklyQuest: Array,
