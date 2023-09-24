@@ -8,6 +8,7 @@ module.exports = (app) => {
   app.post("/quest/give", async (req, res) => {
     const { rUsername } = req.body;
     const { rName } = req.body;
+    const { rState } = req.body;
     // const qDescription = await quest.findOne({qName:rName})
     // const qAccount = await Account.findOne({username:rUsername})
 
@@ -20,6 +21,7 @@ module.exports = (app) => {
           $push: {
             quest: {
               rName,
+              rState,
               progress: 0,
             },
           },
