@@ -82,7 +82,7 @@ module.exports = (app) => {
       fyncid: "not have data",
       item: { wooden_Sword: 1},
       quest: [{}],
-      state: 0,
+      state: {},
       lastAuthentication: Date.now(),
     });
 

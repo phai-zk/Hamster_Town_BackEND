@@ -10,7 +10,7 @@ const accountSchema = new Schema({
     pending: Object,
     fyncid: String,
     quest: Array,
-    state: Number,
+    state: Array,
     weeklyQuest: Array,
     finishedQ: Object,
     lastAuthentication: {type: Date, default: Date.now}
