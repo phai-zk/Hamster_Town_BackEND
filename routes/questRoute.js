@@ -66,7 +66,7 @@ module.exports = (app) => {
     } catch (error) {
       // Handle any errors that occur while fetching items
       console.error(error);
-      res.status(500).send("Something went wrong while fetching items");
+      res.status(500).send("Error : Something went wrong while fetching items");
     }
   });
 
@@ -74,7 +74,7 @@ module.exports = (app) => {
     const { rUsername, rQuestno } = req.body;
 
     if (!rUsername || rQuestno === undefined) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
 
@@ -82,14 +82,14 @@ module.exports = (app) => {
       const userAccount = await Account.findOne({ username: rUsername });
 
       if (!userAccount) {
-        res.send(`Account not found for username: ${rUsername}`);
+        res.send(`Error : Account not found for username: ${rUsername}`);
         return;
       }
 
       const questArray = userAccount.quest;
 
       if (rQuestno >= questArray.length || rQuestno < 0) {
-        res.send(`Invalid quest index: ${rQuestno}`);
+        res.send(`Error : Invalid quest index: ${rQuestno}`);
         return;
       }
 
@@ -112,13 +112,13 @@ module.exports = (app) => {
       );
 
       if (updateResult.nModified === 0) {
-        res.send("Failed to update quest");
+        res.send("Error : Failed to update quest");
       } else {
         res.send(updateQuery.$set);
       }
     } catch (err) {
       console.error(err);
-      res.status(500).send({ error: "Server error" });
+      res.status(500).send({ error: "Error : Server error" });
     }
   });
 

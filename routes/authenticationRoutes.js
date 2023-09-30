@@ -8,7 +8,7 @@ module.exports = (app) => {
     const { rUsername, rPassword } = req.body; //use 2 data for login rUsername, rPassword
     if (!rUsername || !rPassword) {
       //if 2 data are null end api
-      res.send("Invalid credentials");
+      res.send("Error : Invalid credentials");
       return;
     }
 
@@ -25,8 +25,26 @@ module.exports = (app) => {
       }
     }
 
-    res.send("Invalid credentials"); //if can't find user
+    res.send("Error : Invalid credentials"); //if can't find user
   });
+
+  app.post("/account/state", async (req, res) => {
+    const { rUsername, rState } = req.body; //use 2 data for login rUsername, rPassword
+    if (!rUsername || !rState) {
+      //if 2 data are null end api
+      res.send("Error Naja");
+      return;
+    }
+
+    const userAccount = await Account.findOne({ username: rUsername }); //find username in Account database
+    if (userAccount)
+    {
+      userAccount.state = rState;
+      await userAccount.save();
+      res.send(userAccount); //send user info
+      return;
+    }
+  })
 
   // This route is used to create a new account
   app.post("/account/create", async (req, res) => {
@@ -35,7 +53,7 @@ module.exports = (app) => {
 
     // If any of the required fields are missing, send an error response
     if (!rEmail || !rUsername || !rPassword ) {
-      res.send("Invalid credentials");
+      res.send("Error : Invalid credentials");
       return;
     }
 
@@ -46,13 +64,13 @@ module.exports = (app) => {
     console.log(userAccount);
     // If there is already an account with the same email, send an error response
     if (emailAccount) {
-      res.send("Email or Username is already taken ");
+      res.send("Error : Email or Username is already taken ");
       return;
     }
 
     // If there is already an account with the same username, send an error response
     if (userAccount) {
-      res.send("Username is already taken");
+      res.send("Error : Username is already taken");
       return;
     }
 
@@ -64,6 +82,7 @@ module.exports = (app) => {
       fyncid: "not have data",
       item: { wooden_Sword: 1},
       quest: [{}],
+      state: 0,
       lastAuthentication: Date.now(),
     });
 
@@ -95,7 +114,7 @@ module.exports = (app) => {
   app.post("/account/editFyncId", async (req, res) => {
     const { rUsername, rFyncId } = req.body;
     if (!rUsername || !rFyncId) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
 
@@ -108,7 +127,7 @@ module.exports = (app) => {
     );
 
     if (updateResult.nModified === 0) {
-      res.send("Failed to update item amount");
+      res.send("Error : Failed to update item amount");
     } else {
       res.send(updateQuery.$set);
     }

@@ -8,7 +8,7 @@ module.exports = (app) => {
     const { rUsername, rItemName } = req.body;
 
     if (!rUsername || !rItemName) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
 
@@ -32,7 +32,7 @@ module.exports = (app) => {
     );
 
     if (updateResult.nModified === 0) {
-      res.send("Failed to update item amount");
+      res.send("Error : Failed to update item amount");
     } else {
       res.send(updateQuery.$set);
     }
@@ -47,7 +47,7 @@ module.exports = (app) => {
       // Check if all the required fields are present
       if (!rSentedPerson || !rRecievePerson || !rGift) {
         // Send a "Not enough info" response to the client and return from the function
-        res.send("Not enough info");
+        res.send("Error : Not enough info");
         return;
       }
   
@@ -57,14 +57,14 @@ module.exports = (app) => {
   
       if (!sentedAccount || !receivedAccount) {
         // Send an error response if either the sender or receiver account is not found
-        res.send("Sender or receiver account not found");
+        res.send("Error : Sender or receiver account not found");
         return;
       }
   
       // Check if the sender has the gift in their item object
       if (!sentedAccount.item || !sentedAccount.item[rGift]) {
         // Send an error response if the gift is not found in the sender's item object
-        res.send("Gift not found in sender's item object");
+        res.send("Error : Gift not found in sender's item object");
         return;
       }
   
@@ -103,7 +103,7 @@ module.exports = (app) => {
     } catch (err) {
       // Handle any errors that occur during the process
       console.error(err);
-      res.status(500).send("Internal server error");
+      res.status(500).send("Error : Internal server error");
     }
   });
   
@@ -112,7 +112,7 @@ module.exports = (app) => {
     const { rReceivePerson, rSentedPerson } = req.body;
 
   if (!rReceivePerson || !rSentedPerson) {
-    res.send("Not enough info");
+    res.send("Error : Not enough info");
     return;
   }
 
@@ -120,7 +120,7 @@ module.exports = (app) => {
     const receivedAccount = await Account.findOne({ username: rReceivePerson });
 
     if (!receivedAccount.pending || !receivedAccount.pending[rSentedPerson]) {
-      res.send("Gift not found in receiver's pending gifts");
+      res.send("Error : Gift not found in receiver's pending gifts");
       return;
     }
 
@@ -132,7 +132,7 @@ module.exports = (app) => {
     res.send(receivedAccount);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Internal server error.");
+    res.status(500).send("Error : Internal server error.");
   }
   });
 
@@ -140,7 +140,7 @@ module.exports = (app) => {
     const { rUsername, rItemName } = req.body;
 
     if (!rUsername || !rItemName) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
 
@@ -166,7 +166,7 @@ module.exports = (app) => {
     );
 
     if (updateResult.nModified === 0) {
-      res.send("Failed to update item amount");
+      res.send("Error : Failed to update item amount");
     } else {
       res.send(updateQuery.$set);
     }
@@ -176,7 +176,7 @@ module.exports = (app) => {
     const { rUsername, rItemName, rNumber } = req.body;
 
     if (!rUsername || !rItemName || !rNumber) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
 
@@ -205,7 +205,7 @@ module.exports = (app) => {
     );
 
     if (updateResult.nModified === 0) {
-      res.send("Failed to update item amount");
+      res.send("Error : Failed to update item amount");
     } else {
       res.send(updateQuery.$set);
     }
@@ -215,14 +215,14 @@ module.exports = (app) => {
     const { rUsername, rItemName, rNumber } = req.body;
   
     if (!rUsername || !rItemName || !rNumber) {
-      res.send("Not enough info");
+      res.send("Error : Not enough info");
       return;
     }
   
     const userAccount = await Account.findOne({ username: rUsername });
   
     if (!userAccount) {
-      res.send("User not found");
+      res.send("Error : User not found");
       return;
     }
   
@@ -240,7 +240,7 @@ module.exports = (app) => {
     const updateResult = await Account.updateOne({ username: rUsername }, updateQuery);
   
     if (updateResult.nModified === 0) {
-      res.send("Failed to update item amount");
+      res.send("Error : Failed to update item amount");
     } else {
       res.send(updateQuery.$set);
     }
@@ -257,11 +257,11 @@ module.exports = (app) => {
         let itemNo = userAccount.item[ritemname];
         res.send(itemNo.toString()); // Send the item number data as a response
       } else {
-        res.status(404).send({ message: 'User not found' }); // Send error message if user not found
+        res.status(404).send({ message: 'Error : User not found' }); // Send error message if user not found
       }
     } catch(err) {
       console.error(err);
-      res.status(500).send({ message: 'Server error' }); // Send error message if there's a server error
+      res.status(500).send({ message: 'Error : Server error' }); // Send error message if there's a server error
     }
   });
 
