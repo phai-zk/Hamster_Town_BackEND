@@ -28,23 +28,23 @@ module.exports = (app) => {
     res.send("Error : Invalid credentials"); //if can't find user
   });
 
-  app.post("/account/state", async (req, res) => {
-    const { rUsername, rState } = req.body; //use 2 data for login rUsername, rPassword
-    if (!rUsername || !rState) {
-      //if 2 data are null end api
-      res.send("Error Naja");
-      return;
-    }
+  // app.post("/account/state", async (req, res) => {
+  //   const { rUsername, rState } = req.body; //use 2 data for login rUsername, rPassword
+  //   if (!rUsername || !rState) {
+  //     //if 2 data are null end api
+  //     res.send("Error Naja");
+  //     return;
+  //   }
 
-    const userAccount = await Account.findOne({ username: rUsername }); //find username in Account database
-    if (userAccount)
-    {
-      userAccount.state = rState;
-      await userAccount.save();
-      res.send(userAccount); //send user info
-      return;
-    }
-  })
+  //   const userAccount = await Account.findOne({ username: rUsername }); //find username in Account database
+  //   if (userAccount)
+  //   {
+  //     userAccount.state = rState;
+  //     await userAccount.save();
+  //     res.send(userAccount); //send user info
+  //     return;
+  //   }
+  // })
 
   // This route is used to create a new account
   app.post("/account/create", async (req, res) => {
@@ -82,7 +82,7 @@ module.exports = (app) => {
       fyncid: "not have data",
       item: { wooden_Sword: 1},
       quest: [{}],
-      state: 0,
+      // state: 0,
       lastAuthentication: Date.now(),
     });
 
