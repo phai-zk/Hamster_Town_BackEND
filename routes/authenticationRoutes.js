@@ -37,8 +37,7 @@ module.exports = (app) => {
     }
 
     const userAccount = await Account.findOne({ username: rUsername }); //find username in Account database
-    if (userAccount)
-    {
+    if (userAccount) {
       userAccount.state = rState;
       await userAccount.save();
       res.send(userAccount); //send user info
@@ -52,7 +51,7 @@ module.exports = (app) => {
     const { rEmail, rUsername, rPassword } = req.body;
 
     // If any of the required fields are missing, send an error response
-    if (!rEmail || !rUsername || !rPassword ) {
+    if (!rEmail || !rUsername || !rPassword) {
       res.send("Error : Invalid credentials");
       return;
     }
@@ -80,10 +79,11 @@ module.exports = (app) => {
       username: rUsername,
       password: rPassword,
       fyncid: "not have data",
-      item: { wooden_Sword: 1},
+      item: { wooden_Sword: 1 },
       quest: [{}],
-      state: {},
       lastAuthentication: Date.now(),
+      state: {},
+      lastposition: [{ x: 0, y: 0, z: 0 }]
     });
 
     // Save the new account to the database
@@ -118,7 +118,7 @@ module.exports = (app) => {
       return;
     }
 
-    updateQuery = { $set: { fyncid: rFyncId}};
+    updateQuery = { $set: { fyncid: rFyncId } };
 
 
     const updateResult = await Account.updateOne(
@@ -145,5 +145,32 @@ module.exports = (app) => {
     return;
   });
 
-  
+  app.post("/account/position/:username", async (req, res) => {
+    const { rUsername, rPos } = req.body;
+    if (!rUsername || !rPos) {
+      res.send("Error : Not enough info");
+      return;
+    }
+
+    var userAccount = await Account.findOne({ username: rUsername });
+    if (userAccount) {
+      userAccount.lastposition = rPos;
+      await userAccount.save();
+      res.send(userAccount); //send u
+      return;
+    }
+
+  })
+
+  app.get("/account/Getposition/:username", async (req, res) => {
+    var rusername = req.params.username; // Retrieve the username from the request body
+
+    var userAccount = await Account.findOne({ username: rusername });
+    if (userAccount) {
+      res.send(userAccount.lastposition); //send u
+      return;
+    }
+
+  })
+
 };
