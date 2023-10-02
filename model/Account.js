@@ -11,7 +11,8 @@ const accountSchema = new Schema({
     fyncid: String,
     quest: Array,
     state: Array,
-    lastposition: Object,
+    currentScene:String,
+    lastposition: {x:Number,y:Number,z:Number},
     weeklyQuest: Array,
     finishedQ: Object,
     lastAuthentication: {type: Date, default: Date.now}
