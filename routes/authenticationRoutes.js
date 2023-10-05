@@ -79,7 +79,7 @@ module.exports = (app) => {
       username: rUsername,
       password: rPassword,
       fyncid: "not have data",
-      item: { wooden_Sword: 1 },
+      item: {},
       quest: [{}],
       state: {},
       currentScene: "Homebond",
