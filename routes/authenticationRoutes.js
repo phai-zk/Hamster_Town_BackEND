@@ -79,6 +79,7 @@ module.exports = (app) => {
       username: rUsername,
       password: rPassword,
       fyncid: "not have data",
+      iog: [],
       item: {},
       quest: [{}],
       state: {},
