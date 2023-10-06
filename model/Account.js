@@ -7,6 +7,7 @@ const accountSchema = new Schema({
     password: String,
     tag: Array,
     item: Object,
+    iog: Array,
     pending: Object,
     fyncid: String,
     quest: Array,
