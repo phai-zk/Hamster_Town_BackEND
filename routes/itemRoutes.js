@@ -246,6 +246,31 @@ module.exports = (app) => {
     }
   });
 
+  app.post("/item/iog", async (req, res) => {
+    const { rUsername } = req.body;
+    const { rItemName } = req.body;
+
+    try {
+      const qAccount = await Account.findOne({ username: rUsername });
+      await Account.updateOne(
+        { username: rUsername },
+        {
+          $push: {
+            iog: {
+              rItemName,
+            },
+          },
+        },
+        { new: true }
+      );
+      res.send(qAccount);
+
+    } catch (err) {
+      // Handle error
+      console.error(err);
+    }
+  });
+
   app.get('/item/checkAmount/:username/:itemname', async function (req, res) {
     var rusername = req.params.username; // Retrieve the username from the request body
     var ritemname = req.params.itemname;
