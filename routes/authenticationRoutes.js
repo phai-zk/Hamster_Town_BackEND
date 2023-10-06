@@ -82,7 +82,6 @@ module.exports = (app) => {
       iog: [],
       item: {},
       quest: [{}],
-      state: {},
       currentScene: "Homebond",
       lastAuthentication: Date.now(),
       lastposition: { x: 4.5, y: 16, z: 0 }
