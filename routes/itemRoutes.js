@@ -252,7 +252,7 @@ module.exports = (app) => {
 
     try {
       const qAccount = await Account.findOne({ username: rUsername });
-      await Account.updateOne(
+      const updateAccount = await Account.updateOne(
         { username: rUsername },
         {
           $push: {
@@ -263,11 +263,29 @@ module.exports = (app) => {
         },
         { new: true }
       );
-      res.send(qAccount);
+      res.send(updateAccount);
 
     } catch (err) {
       // Handle error
       console.error(err);
+    }
+  });
+
+  app.get('/item/iog/:username', async function (req, res) {
+    var rusername = req.params.username; // Retrieve the username from the request body
+    console.log(ritemname);
+
+    try {
+      var userAccount = await Account.findOne({ username: rusername });
+      if (userAccount) {
+        let log = userAccount.log;
+        res.send(log); // Send the item number data as a response
+      } else {
+        res.status(404).send({ message: 'Error : User not found' }); // Send error message if user not found
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: 'Error : Server error' }); // Send error message if there's a server error
     }
   });
 
