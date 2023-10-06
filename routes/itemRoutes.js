@@ -271,7 +271,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/item/iog/:username', async function (req, res) {
+  app.get('/item/GetIog/:username', async function (req, res) {
     var rusername = req.params.username; // Retrieve the username from the request body
     console.log(ritemname);
 
