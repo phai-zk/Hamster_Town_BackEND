@@ -9,11 +9,12 @@ const accountSchema = new Schema({
     item: Object,
     fyncid: String,
     quest: Array,
-    currentScene:String,
-    lastposition: {x:Number,y:Number,z:Number},
+    lastposition: {
+        currentScene: String, x: Number, y: Number, z: Number
+    },
     weeklyQuest: Array,
     finishedQ: Object,
-    lastAuthentication: {type: Date, default: Date.now}
+    lastAuthentication: { type: Date, default: Date.now }
 });
 
 mongoose.model('accounts', accountSchema);

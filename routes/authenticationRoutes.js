@@ -82,9 +82,10 @@ module.exports = (app) => {
       iog: [],
       item: {},
       quest: [{}],
-      currentScene: "Homebond",
       lastAuthentication: Date.now(),
-      lastposition: { x: 4.5, y: 16, z: 0 }
+      lastposition: {
+        currentScene: "Homebond", x: 4.5, y: 16, z: 0
+      }
     });
 
     // Save the new account to the database
@@ -148,14 +149,15 @@ module.exports = (app) => {
 
   app.post("/account/position/:username", async (req, res) => {
     var rusername = req.params.username; // Retrieve the username from the request body
-    const { rX , rY , rZ } = req.body;
-    if (!rX || !rY || !rZ) {
+    const { rScene, rX, rY, rZ } = req.body;
+    if (!rScene || !rX || !rY || !rZ) {
       res.send("Error : Not enough info");
       return;
     }
 
     var userAccount = await Account.findOne({ username: rusername });
     if (userAccount) {
+      userAccount.lastposition.currentScene = rScene;
       userAccount.lastposition.x = rX;
       userAccount.lastposition.y = rY;
       userAccount.lastposition.z = rZ;
@@ -172,35 +174,6 @@ module.exports = (app) => {
     var userAccount = await Account.findOne({ username: rusername });
     if (userAccount) {
       res.send(userAccount.lastposition); //send u
-      return;
-    }
-
-  })
-
-  app.post("/account/scene/:username", async (req, res) => {
-    var rusername = req.params.username; // Retrieve the username from the request body
-    const { rScene } = req.body;
-    if (!rScene) {
-      res.send("Error : Not enough info");
-      return;
-    }
-
-    var userAccount = await Account.findOne({ username: rusername });
-    if (userAccount) {
-      userAccount.currentScene = rScene;
-      await userAccount.save();
-      res.send(userAccount); //send u
-      return;
-    }
-
-  })
-
-  app.get("/account/GetScene/:username", async (req, res) => {
-    var rusername = req.params.username; // Retrieve the username from the request body
-
-    var userAccount = await Account.findOne({ username: rusername });
-    if (userAccount) {
-      res.send(userAccount.currentScene); //send u
       return;
     }
 
