@@ -56,7 +56,11 @@ module.exports = (app) => {
   });
 
 
-  app.get("/quest", async (req, res) => {
+  app.get("/quest/:username", async (req, res) => {
+    var rusername = req.params.username;
+
+    var userAccount = await Account.findOne({ username: rusername });
+    if (userAccount) {
     try {
       // Retrieve all items from the database
       const quests = await quest.find();
@@ -68,7 +72,19 @@ module.exports = (app) => {
       console.error(error);
       res.status(500).send("Error : Something went wrong while fetching items");
     }
+  }
   });
+
+  app.get("/account/Getposition/:username", async (req, res) => {
+    var rusername = req.params.username; // Retrieve the username from the request body
+
+    var userAccount = await Account.findOne({ username: rusername });
+    if (userAccount) {
+      res.send(userAccount.lastposition); //send u
+      return;
+    }
+
+  })
 
   app.post("/quest/clearquest", async (req, res) => {
     const { rUsername, rQuestno } = req.body;
