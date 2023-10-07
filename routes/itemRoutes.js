@@ -271,25 +271,18 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/item/GetIog/:username', async function (req, res) {
-    var rusername = req.params.username; // Retrieve the username from the request body
-    console.log(ritemname);
-
+  app.get("/item/getIog/:username", async (req, res) => {
+    var rusername = req.params.username;
+    const userAccount = await Account.findOne({ username: rusername })
     try {
-      var userAccount = await Account.findOne({ username: rusername });
-      if (userAccount) {
-        let log = userAccount.log;
-        res.send(log); // Send the item number data as a response
-      } else {
-        res.status(404).send({ message: 'Error : User not found' }); // Send error message if user not found
-      }
+      res.send(userAccount.iog);
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: 'Error : Server error' }); // Send error message if there's a server error
+      res.send(err);
     }
-  });
+  })
 
-  app.get('/item/checkAmount/:username/:itemname', async function (req, res) {
+  app.get('/item/checkItem/:username/:itemname', async function (req, res) {
     var rusername = req.params.username; // Retrieve the username from the request body
     var ritemname = req.params.itemname;
     console.log(ritemname);
@@ -308,7 +301,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/item/checkAmount/:username', async function (req, res) {
+  app.get('/item/checkItem/:username', async function (req, res) {
     var rusername = req.params.username;
 
     try {
