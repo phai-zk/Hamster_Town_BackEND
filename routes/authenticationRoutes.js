@@ -80,7 +80,9 @@ module.exports = (app) => {
       password: rPassword,
       fyncid: "not have data",
       iog: [],
-      item: {},
+      item: {
+        "wood_sword" : 1
+      },
       quest: [{}],
       lastAuthentication: Date.now(),
       lastposition: {
