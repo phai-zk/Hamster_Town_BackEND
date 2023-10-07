@@ -83,7 +83,7 @@ module.exports = (app) => {
       item: {
         "wood_sword" : 1
       },
-      quest: [{}],
+      quest: [],
       lastAuthentication: Date.now(),
       lastposition: {
         currentScene: "Homebond", x: 4.5, y: 16, z: 0

@@ -8,7 +8,7 @@ const accountSchema = new Schema({
     iog: Array,
     item: Object,
     fyncid: String,
-    quest: Array,
+    quest: [{}],
     lastposition: {
         currentScene: String, x: Number, y: Number, z: Number
     },
