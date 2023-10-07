@@ -59,7 +59,6 @@ module.exports = (app) => {
     }
   });
 
-
   app.get("/quest/Allquest/:username", async (req, res) => {
     var rusername = req.params.username;
 
