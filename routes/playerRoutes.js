@@ -151,7 +151,6 @@ module.exports = (app) => {
         var rusername = req.params.username;
         const { rCurrency } = req.body;
         if (!rusername, !rCurrency) {
-            //if 2 data are null end api
             res.send("Error : Invalid");
             return;
         }
@@ -159,7 +158,7 @@ module.exports = (app) => {
         if (userAccount) {
             userAccount.rareEarth = rCurrency;
             userAccount.save();
-            res.send(username.rareEarth);
+            res.send(userAccount.rareEarth);
             return;
         }
         res.send("Error : Not found");
