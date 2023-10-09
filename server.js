@@ -25,33 +25,32 @@ mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopolo
     let accounts = await Account.find();
 
     try {
-        for (const account of accounts) {
-            // Key U wana add
-            if (account.player) {
-                const result = await Account.updateOne({ username: account.username },
-
-                    // Key U wana add
-                    { player: { $exists: false } },
-                    {
-                     // value U wana add
-                        $set: {
-                            player: {
-                                equip: {
-                                    Helmet: { name: "", quantity: 0 },
-                                    Chestplate: { name: "", quantity: 0 },
-                                    Legging: { name: "", quantity: 0 },
-                                    Boot: { name: "", quantity: 0 },
-                                    Hold: { name: "", quantity: 0 },
-                                },
-                                stat:
-                                {
-                                    lv: 1
-                                }
-                            }
-                        }
-                    });
-            }
-        }
+        // const accountsWithoutPlayer = await Account.find({ player: { $exists: false } });
+        // accountsWithoutPlayer.forEach(async (account) => {
+        //     try {
+        //       const result = await Account.updateOne(
+        //         { username: account.username },
+        //         {
+        //           $set: {
+        //             player: {
+        //               equip: {
+        //                 Helmet: { name: "", quantity: 0 },
+        //                 Chestplate: { name: "", quantity: 0 },
+        //                 Legging: { name: "", quantity: 0 },
+        //                 Boot: { name: "", quantity: 0 },
+        //                 Hold: { name: "", quantity: 0 },
+        //               },
+        //               stat: { lv: 1 }
+        //             }
+        //           }
+        //         }
+        //       );
+      
+        //       console.log(`Updated document with _id ${account._id}`);
+        //     } catch (error) {
+        //       console.error(`Error updating document with _id ${account._id}:`, error);
+        //     }
+    // })
     } catch (error) {
         console.error(error);
     }
@@ -67,6 +66,7 @@ require('./model/Item');
 //setup routes
 require('./routes/authenticationRoutes')(app);
 require('./routes/itemRoutes')(app);
+require('./routes/playerRoutes')(app);
 require('./routes/questRoute')(app);
 
 const port = 13756
