@@ -159,18 +159,18 @@ module.exports = (app) => {
         const userAccount = await Account.findOne({ username: rusername });
         if (userAccount) {
 
-            let newCurrency = 0;
-            if (userAccount.rareEarth) {
-                newCurrency = parseInt(userAccount.rareEarth);
-            }
-            const updateValue =  newCurrency + parseInt(rCurrency) 
-            const updateCurrency = { $set: { rareEarth: updateValue} }
-            const updateResult = await Account.updateOne({ userAccount: rusername }, updateCurrency)
+            // let newCurrency = 0;
+            // if (userAccount.rareEarth) {
+            //     newCurrency = parseInt(userAccount.rareEarth);
+            // }
+            // const updateValue = newCurrency + parseInt(rCurrency)
+            const updateCurrency = { $inc: { rareEarth: rCurrency } }
+            const updateResult = await Account.updateOne({ username: rusername }, updateCurrency)
 
             if (updateResult.nModified === 0) {
                 res.send("Error : Failed to update");
             } else {
-                res.send(updateCurrency.$set);
+                res.send("successfully");
             }
         }
     });
