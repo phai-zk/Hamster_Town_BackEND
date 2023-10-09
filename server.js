@@ -13,26 +13,47 @@ app.use(express.json());
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
-mongoose.connect(process.env.mongoURI, { useNewUrlParser: trueuseNewUrlParser: true, useUnifiedTopology: true }, async (err, client) => {
+mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, async (err, client) => {
+
     if (err) {
         console.error(err);
         return;
     }
 
-    const db = client.db(dbName);
-    const collection = db.collection('your_collection_name');
+    const Account = mongoose.model("accounts");
+
+    let accounts = await Account.find();
 
     try {
-        const result = await collection.updateMany(
-            { player: { $exists: false } },
-            { $set: { player: { equip: {}, stat: { lv: 0 } } } }
-        );
+        for (const account of accounts) {
+            // Key U wana add
+            if (account.player) {
+                const result = await Account.updateOne({ username: account.username },
 
-        console.log(`${result.modifiedCount} documents updated`);
+                    // Key U wana add
+                    { player: { $exists: false } },
+                    {
+                     // value U wana add
+                        $set: {
+                            player: {
+                                equip: {
+                                    Helmet: { name: "", quantity: 0 },
+                                    Chestplate: { name: "", quantity: 0 },
+                                    Legging: { name: "", quantity: 0 },
+                                    Boot: { name: "", quantity: 0 },
+                                    Hold: { name: "", quantity: 0 },
+                                },
+                                stat:
+                                {
+                                    lv: 1
+                                }
+                            }
+                        }
+                    });
+            }
+        }
     } catch (error) {
         console.error(error);
-    } finally {
-        client.close();
     }
 });
 
