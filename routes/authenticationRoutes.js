@@ -50,7 +50,7 @@ module.exports = (app) => {
     // Extract the email, username, and password from the request body
     const { rEmail, rUsername, rPassword } = req.body;
 
-    if (rEmail && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(rEmail)) {
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(rEmail)) {
       res.send("Error : Invalid email address!");
       return;
     }
