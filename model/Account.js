@@ -20,6 +20,7 @@ const accountSchema = new Schema({
             lv:Number
         }
     },
+    rareEarth: Number,
     fyncid: String,
     quest: [{}],
     lastposition: {

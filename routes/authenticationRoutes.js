@@ -86,9 +86,7 @@ module.exports = (app) => {
       password: rPassword,
       fyncid: "not have data",
       iog: [],
-      item: {
-        "wood_sword": 1
-      },
+      item: {},
       player: {
         equip: {
           Helmet: { name: "", quantity: 0 },
@@ -97,11 +95,9 @@ module.exports = (app) => {
           Boot: { name: "", quantity: 0 },
           Hold: { name: "", quantity: 0 },
         },
-        stat:
-        {
-          lv: 1
-        }
+        stat: { lv: 1 }
       },
+      rareEarth: 100,
       quest: [],
       lastAuthentication: Date.now(),
       lastposition: {

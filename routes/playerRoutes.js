@@ -97,7 +97,7 @@ module.exports = (app) => {
 
     app.get("/player/:username/equip", async (req, res) => {
         var rusername = req.params.username;
-        
+
         if (!rusername) {
             //if 2 data are null end api
             res.send("Error : Invalid credentials");
@@ -123,7 +123,7 @@ module.exports = (app) => {
 
         var userAccount = await Account.findOne({ username: rusername });
         if (userAccount) {
-            userAccount.player.stat.lv = rstat; 
+            userAccount.player.stat.lv = rstat;
             res.send(userAccount.player.stat)
             return;
         }
@@ -132,7 +132,7 @@ module.exports = (app) => {
 
     app.get("/player/:username/GetStat", async (req, res) => {
         var rusername = req.params.username;
-        
+
         if (!rusername) {
             //if 2 data are null end api
             res.send("Error : Invalid credentials");
@@ -142,6 +142,57 @@ module.exports = (app) => {
         var userAccount = await Account.findOne({ username: rusername });
         if (userAccount) {
             res.send(userAccount.player.stat)
+            return;
+        }
+        res.send("Error : Not found")
+    })
+
+    app.post("/player/:username/currency", async (req, res) => {
+        var rusername = req.params.username;
+        const { rCurrency } = req.body;
+        if (!rusername, !rCurrency) {
+            //if 2 data are null end api
+            res.send("Error : Invalid");
+            return;
+        }
+        const userAccount = await Account.findOne({ username: rusername });
+
+        if (!userAccount) {
+            res.send("Error : User not found");
+            return;
+        }
+
+        let currency = 0;
+        if (userAccount.rareEarth) {
+            currency = parseInt(userAccount.rareEarth);
+        }
+
+        const updatedCurrency = currency + parseInt(rCurrency);
+
+        const updateQuery = {
+            $set: { ["rareEarth"]: updatedCurrency },
+        };
+
+        const updateResult = await Account.updateOne({ username: rusername }, updateQuery);
+
+        if (updateResult.nModified === 0) {
+            res.send("Error : Failed to update item amount");
+        } else {
+            res.send(updateQuery.$set);
+        }
+    })
+
+    app.get("/player/:username/GetCurrency", async (req, res) => {
+        var rusername = req.params.username;
+        if (!rusername) {
+            //if 2 data are null end api
+            res.send("Error : Invalid credentials");
+            return;
+        }
+
+        var userAccount = await Account.findOne({ username: rusername });
+        if (userAccount) {
+            res.send(userAccount.player.rareEarth)
             return;
         }
         res.send("Error : Not found")

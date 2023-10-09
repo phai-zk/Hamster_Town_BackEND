@@ -25,32 +25,26 @@ mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopolo
     let accounts = await Account.find();
 
     try {
-        // const accountsWithoutPlayer = await Account.find({ player: { $exists: false } });
+        
+        // const accountsWithoutPlayer = await Account.find({ rareEarth: { $exists: false } });
+
         // accountsWithoutPlayer.forEach(async (account) => {
         //     try {
-        //       const result = await Account.updateOne(
-        //         { username: account.username },
-        //         {
-        //           $set: {
-        //             player: {
-        //               equip: {
-        //                 Helmet: { name: "", quantity: 0 },
-        //                 Chestplate: { name: "", quantity: 0 },
-        //                 Legging: { name: "", quantity: 0 },
-        //                 Boot: { name: "", quantity: 0 },
-        //                 Hold: { name: "", quantity: 0 },
-        //               },
-        //               stat: { lv: 1 }
+        //         const result = await Account.updateOne(
+        //             { username: account.username },
+        //             {
+        //                 $set: {
+        //                     rareEarth: 100,
+
+        //                 }
         //             }
-        //           }
-        //         }
-        //       );
-      
-        //       console.log(`Updated document with _id ${account._id}`);
+        //         );
+
+        //         console.log(`Updated document with _id ${account._id}`);
         //     } catch (error) {
-        //       console.error(`Error updating document with _id ${account._id}:`, error);
+        //         console.error(`Error updating document with _id ${account._id}:`, error);
         //     }
-    // })
+        // })
     } catch (error) {
         console.error(error);
     }
