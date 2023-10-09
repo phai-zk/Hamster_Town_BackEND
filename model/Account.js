@@ -7,6 +7,19 @@ const accountSchema = new Schema({
     password: String,
     iog: Array,
     item: Object,
+    player:{
+        equip:{
+            Helmet:{name:String, quantity:Number},
+            Chestplate:{name:String, quantity:Number},
+            Legging:{name:String, quantity:Number},
+            Boot:{name:String, quantity:Number},
+            Hold:{name:String, quantity:Number},
+        },
+        stat:
+        {
+            lv:Number
+        }
+    },
     fyncid: String,
     quest: [{}],
     lastposition: {

@@ -87,7 +87,20 @@ module.exports = (app) => {
       fyncid: "not have data",
       iog: [],
       item: {
-        "wood_sword" : 1
+        "wood_sword": 1
+      },
+      player: {
+        equip: {
+          Helmet: { name: "", quantity: 0 },
+          Chestplate: { name: "", quantity: 0 },
+          Legging: { name: "", quantity: 0 },
+          Boot: { name: "", quantity: 0 },
+          Hold: { name: "", quantity: 0 },
+        },
+        stat:
+        {
+          lv: 1
+        }
       },
       quest: [],
       lastAuthentication: Date.now(),
@@ -186,5 +199,26 @@ module.exports = (app) => {
     }
 
   })
+
+  
+
+  app.post('/api/accounts/checkLoot', async (req, res) => {
+    try {
+        const accounts = await Account.find();
+
+        for (const account of accounts) {
+            if (!account.player) {
+                // ทำตราบเท่านี้สำหรับ account ที่เป็น account เก่าและไม่มี loot
+                // ตราบเท่านี้คือตัวอย่าง คุณสามารถเพิ่มเงื่อนไขของคุณตามต้อง
+                console.log(`Account ${account.username} is an old account without loot.`);
+            }
+        }
+
+        res.status(200).json({ message: 'Check complete' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 };
