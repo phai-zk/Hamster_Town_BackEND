@@ -155,31 +155,14 @@ module.exports = (app) => {
             res.send("Error : Invalid");
             return;
         }
-        const userAccount = await Account.findOne({ username: rusername });
-
-        if (!userAccount) {
-            res.send("Error : User not found");
+        const userAccount = await Account.findOne({username: rusername})
+        if (userAccount) {
+            userAccount.rareEarth = rCurrency;
+            userAccount.save();
+            res.send(username.rareEarth);
             return;
         }
-
-        let currency = 0;
-        if (userAccount.rareEarth) {
-            currency = parseInt(userAccount.rareEarth);
-        }
-
-        const updatedCurrency = currency + parseInt(rCurrency);
-
-        const updateQuery = {
-            $set: { ["rareEarth"]: updatedCurrency },
-        };
-
-        const updateResult = await Account.updateOne({ username: rusername }, updateQuery);
-
-        if (updateResult.nModified === 0) {
-            res.send("Error : Failed to update item amount");
-        } else {
-            res.send(updateQuery.$set);
-        }
+        res.send("Error : Not found");
     })
 
     app.get("/player/:username/GetCurrency", async (req, res) => {
