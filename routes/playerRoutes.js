@@ -148,35 +148,48 @@ module.exports = (app) => {
     })
 
     app.post("/player/:username/currency", async (req, res) => {
-        var rusername = req.params.username;
+        const rusername = req.params.username;
         const { rCurrency } = req.body;
-        if (!rusername, !rCurrency) {
-            res.send("Error : Invalid");
+
+        if (!rusername || !rCurrency) {
+            res.send("Error: Invalid");
             return;
         }
-        const userAccount = await Account.findOne({username: rusername})
+
+        const userAccount = await Account.findOne({ username: rusername });
         if (userAccount) {
-            userAccount.rareEarth = rCurrency;
-            userAccount.save();
-            res.send(userAccount.rareEarth);
-            return;
+
+            let newCurrency = 0;
+            if (userAccount.rareEarth) {
+                newCurrency = parseInt(userAccount.rareEarth);
+            }
+            const updateValue =  newCurrency + parseInt(rCurrency) 
+            const updateCurrency = { $set: { rareEarth: updateValue} }
+            const updateResult = await Account.updateOne({ userAccount: rusername }, updateCurrency)
+
+            if (updateResult.nModified === 0) {
+                res.send("Error : Failed to update");
+            } else {
+                res.send(updateCurrency.$set);
+            }
         }
-        res.send("Error : Not found");
-    })
+    });
 
     app.get("/player/:username/GetCurrency", async (req, res) => {
-        var rusername = req.params.username;
+        const rusername = req.params.username;
+
         if (!rusername) {
-            //if 2 data are null end api
-            res.send("Error : Invalid credentials");
+            res.send("Error: Invalid credentials");
             return;
         }
 
-        var userAccount = await Account.findOne({ username: rusername });
+        const userAccount = await Account.findOne({ username: rusername });
+
         if (userAccount) {
-            res.send(userAccount.player.rareEarth)
-            return;
+            res.send(userAccount.rareEarth + "");
+        } else {
+            res.send("Error: Not found");
         }
-        res.send("Error : Not found")
-    })
+    });
+
 }
