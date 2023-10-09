@@ -50,11 +50,17 @@ module.exports = (app) => {
     // Extract the email, username, and password from the request body
     const { rEmail, rUsername, rPassword } = req.body;
 
+    if (rEmail && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(rEmail)) {
+      res.send("Error : Invalid email address!");
+      return;
+    }
+
     // If any of the required fields are missing, send an error response
     if (!rEmail || !rUsername || !rPassword) {
       res.send("Error : Invalid credentials");
       return;
     }
+
 
     // Check if there is already an account with the same username or email
     const userAccount = await Account.findOne({ username: rUsername });
