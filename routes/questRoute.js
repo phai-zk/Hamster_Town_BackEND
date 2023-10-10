@@ -42,6 +42,7 @@ module.exports = (app) => {
 
   app.post("/quest/data", async (req, res) => {
     const {rUsername} = req.body;
+    const {rName} = req.body
     const {rQuestData} = req.body;
     try {
       const qAccount = await Account.findOne({ username: rUsername });
@@ -50,6 +51,7 @@ module.exports = (app) => {
         {
           $push : {
             questData: {
+              rName,
               rQuestData,
             }
           }
