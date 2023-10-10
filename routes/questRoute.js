@@ -44,9 +44,14 @@ module.exports = (app) => {
     const { rUsername } = req.body;
     const { rName } = req.body
     const { rQuestData } = req.body;
+    if (!rUsername||!rName||!rQuestData) {
+      res.send("Error : Not Found")
+      return;
+    }
     try {
+
       const qAccount = await Account.findOne({ username: rUsername });
-      await Account.updateOne(
+      const updateData = Account.updateOne(
         { username: rUsername },
         {
           $push: {
@@ -55,16 +60,44 @@ module.exports = (app) => {
               rQuestData,
             }
           }
+        })
+
+      if (qAccount.questData.length > 0) {
+
+        let check = false;
+
+        qAccount.questData.forEach(data => {
+          if (rName == data.rName) {
+            check = true;
+          }
+        })
+
+        console.log(!check);
+        if (!check) {
+          await updateData;
+          res.send("successfully")
+          return;
         }
-      )
+        res.send("Error : Already have this quest")
+        return;
+      }
+      await updateData;
+      res.send("successfully")
+
     } catch (err) {
       console.error(err);
     }
+
+
   });
 
   app.get("/quest/data/:rusername/:questName", async (req, res) => {
     const rusername = req.params.rusername;
     const rquest = req.params.questName;
+    if (!rusername||!rquest) {
+      res.send("Error : Not Found");
+      return;
+    }
     try {
       const qAccount = await Account.findOne({ username: rusername });
       if (qAccount.questData) {
@@ -73,12 +106,48 @@ module.exports = (app) => {
 
           if (data.rName == rquest) {
             res.send(data);
+            return;
           }
         });
       }
+      res.send("Error : Not Have Quest")
     } catch (err) {
       console.error(err);
     }
+  });
+
+  app.get("/quest/data/:rusername", async (req, res) => {
+    const rusername = req.params.rusername;
+    if (!rusername) {
+      res.send("Error : Not Found");
+      return;
+    }
+    try {
+      const qAccount = await Account.findOne({ username: rusername });
+      res.send(qAccount.questData);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  app.post("/quest/data/clear/:rusername", async (req, res) => {
+    const rusername = req.params.rusername;
+    if (!rusername) {
+      req.send("Error : Not Found")
+    }
+    const qAccount = await Account.findOne({ username: rusername });
+    if (qAccount.questData) {
+      await Account.updateOne(
+        { username: rusername },
+        {
+          $set: {
+            questData: {}
+          }
+        })
+        res.send("successfully")
+        return;
+    }
+    res.send("Error : Not Found")
   });
 
   app.post("/quest/update", async (req, res) => {
