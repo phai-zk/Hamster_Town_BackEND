@@ -165,7 +165,7 @@ module.exports = (app) => {
             if (updateResult.nModified === 0) {
                 res.send("Error : Failed to update");
             } else {
-                res.send("successfully");
+                res.send(userAccount.rareEarth+Number(rCurrency)+"");
             }
         }
     });

@@ -134,6 +134,22 @@ module.exports = (app) => {
     }
   });
 
+  app.get("/account/dialog/:rusername", async (req, res) => {
+    const rusername  = req.params.rusername;
+    if (!rusername) {
+      res.send("Error : Not Found");
+    }
+
+    try {
+      const qAccount = await Account.findOne({ username: rusername });
+      res.send(qAccount.dialogVariable);
+    } catch (err) {
+      // Handle error
+      console.error(err);
+      res.send("Error : Not Found");
+    }
+  });
+
   app.get("/account/getData/:username", async (req, res) => {
     var rusername = req.params.username; // Retrieve the username from the request body
     console.log(rusername);
