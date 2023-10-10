@@ -44,14 +44,14 @@ module.exports = (app) => {
     const { rUsername } = req.body;
     const { rName } = req.body
     const { rQuestData } = req.body;
-    if (!rUsername||!rName||!rQuestData) {
+    if (!rUsername || !rName || !rQuestData) {
       res.send("Error : Not Found")
       return;
     }
     try {
 
       const qAccount = await Account.findOne({ username: rUsername });
-      const updateData = Account.updateOne(
+      const AddData = Account.updateOne(
         { username: rUsername },
         {
           $push: {
@@ -62,30 +62,27 @@ module.exports = (app) => {
           }
         })
 
-      if (qAccount.questData.length > 0) {
+      const existingQuestData = qAccount.questData.find((data) => data.rName === rName);
 
-        let check = false;
-
-        qAccount.questData.forEach(data => {
-          if (rName == data.rName) {
-            check = true;
+      if (existingQuestData) {
+        // Update existing quest data
+        const updatedData = await Account.updateOne(
+          { username: rUsername, "questData.rName": rName },
+          {
+            $set: {
+              "questData.$.rQuestData": rQuestData
+            }
           }
-        })
-
-        console.log(!check);
-        if (!check) {
-          await updateData;
-          res.send("successfully")
-          return;
-        }
-        res.send("Error : Already have this quest")
+        );
+        res.send("Update successfully")
         return;
       }
-      await updateData;
-      res.send("successfully")
 
+      await AddData;
+      res.send("successfully")
     } catch (err) {
       console.error(err);
+      res.send("Error : Invalid")
     }
 
 
@@ -94,7 +91,7 @@ module.exports = (app) => {
   app.get("/quest/data/:rusername/:questName", async (req, res) => {
     const rusername = req.params.rusername;
     const rquest = req.params.questName;
-    if (!rusername||!rquest) {
+    if (!rusername || !rquest) {
       res.send("Error : Not Found");
       return;
     }
@@ -141,11 +138,11 @@ module.exports = (app) => {
         { username: rusername },
         {
           $set: {
-            questData: null
+            questData: []
           }
         })
-        res.send("successfully")
-        return;
+      res.send("successfully")
+      return;
     }
     res.send("Error : Not Found")
   });
