@@ -39,7 +39,8 @@ module.exports = (app) => {
 
                 case "Hold":
                     equip.Hold.name = ritem;
-                    equip.Hold.quantity = rquantity;
+                    const updateQuantity = { $inc: { [`player.equip.Hold.quantity`]: rquantity } }
+                    await Account.updateOne({ username: rusername }, updateQuantity)
                     break;
             }
 
@@ -158,12 +159,6 @@ module.exports = (app) => {
 
         const userAccount = await Account.findOne({ username: rusername });
         if (userAccount) {
-
-            // let newCurrency = 0;
-            // if (userAccount.rareEarth) {
-            //     newCurrency = parseInt(userAccount.rareEarth);
-            // }
-            // const updateValue = newCurrency + parseInt(rCurrency)
             const updateCurrency = { $inc: { rareEarth: rCurrency } }
             const updateResult = await Account.updateOne({ username: rusername }, updateCurrency)
 
