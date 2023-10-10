@@ -99,6 +99,7 @@ module.exports = (app) => {
       },
       rareEarth: 100,
       quest: [],
+      questData: [],
       lastAuthentication: Date.now(),
       lastposition: {
         currentScene: "Homebond", x: 4.5, y: 16, z: 0
