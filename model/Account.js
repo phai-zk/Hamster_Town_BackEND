@@ -29,6 +29,7 @@ const accountSchema = new Schema({
     },
     weeklyQuest: Array,
     finishedQ: Object,
+    dialogVariable: String,
     lastAuthentication: { type: Date, default: Date.now }
 });
 
