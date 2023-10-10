@@ -141,7 +141,7 @@ module.exports = (app) => {
         { username: rusername },
         {
           $set: {
-            questData: {}
+            questData: null
           }
         })
         res.send("successfully")
