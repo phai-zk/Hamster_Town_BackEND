@@ -113,6 +113,27 @@ module.exports = (app) => {
     res.send(newAccount);
   });
 
+  app.post("/account/dialog", async (req, res) => {
+    const { rUsername } = req.body;
+    const { rData } = req.body;
+    try {
+      const qAccount = await Account.findOne({ username: rUsername });
+      await Account.updateOne(
+        { username: rUsername },
+        {
+          $set: {
+            dialogVariable: rData,
+            },
+          },
+      );
+      res.send(qAccount);
+
+    } catch (err) {
+      // Handle error
+      console.error(err);
+    }
+  });
+
   app.get("/account/getData/:username", async (req, res) => {
     var rusername = req.params.username; // Retrieve the username from the request body
     console.log(rusername);
