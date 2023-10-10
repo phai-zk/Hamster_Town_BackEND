@@ -24,27 +24,27 @@ mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopolo
 
     let accounts = await Account.find();
 
-    try {
-        
-         const accountsWithoutPlayer = await Account.find({ questData: { $exists: false } })
-         accountsWithoutPlayer.forEach(async (account) => {
-             try {
-                 const result = await Account.updateOne(
-                     { username: account.username },
-                     {
-                         $set: {
-                            questData: "",
-                         }
-                     }
-                 )
-                 console.log(`Updated document with _id ${account._id}`);
-             } catch (error) {
-                 console.error(`Error updating document with _id ${account._id}:`, error);
-             }
-         })
-    } catch (error) {
-        console.error(error);
-    }
+    //try {
+    //    
+    //     const accountsWithoutPlayer = await Account.find({ questData: { $exists: false } })
+    //     accountsWithoutPlayer.forEach(async (account) => {
+    //         try {
+    //             const result = await Account.updateOne(
+    //                 { username: account.username },
+    //                 {
+    //                     $set: {
+    //                        questData: "",
+    //                     }
+    //                 }
+    //             )
+    //             console.log(`Updated document with _id ${account._id}`);
+    //         } catch (error) {
+    //             console.error(`Error updating document with _id ${account._id}:`, error);
+    //         }
+    //     })
+    //} catch (error) {
+    //    console.error(error);
+    //}
 });
 
 //Setup database models
