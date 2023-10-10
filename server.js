@@ -33,7 +33,7 @@ mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopolo
     //                 { username: account.username },
     //                 {
     //                     $set: {
-    //                        questData: "",
+    //                        questData: ""
     //                     }
     //                 }
     //             )

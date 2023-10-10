@@ -23,7 +23,7 @@ const accountSchema = new Schema({
     rareEarth: Number,
     fyncid: String,
     quest: [{}],
-    questData: String,
+    questData: Array,
     lastposition: {
         currentScene: String, x: Number, y: Number, z: Number
     },
