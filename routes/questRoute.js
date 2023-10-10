@@ -40,6 +40,26 @@ module.exports = (app) => {
     }
   });
 
+  app.post("/quest/data", async (req, res) => {
+    const {rUsername} = req.body;
+    const {rQuestData} = req.body;
+    try {
+      const qAccount = await Account.findOne({ username: rUsername });
+      await Account.updateOne(
+        { username: rUsername },
+        {
+          $push : {
+            questData: {
+              rQuestData,
+            }
+          }
+        }
+      )
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
   app.post("/quest/update", async (req, res) => {
     const { rUsername } = req.body;
     const { rQuestno } = req.body;
