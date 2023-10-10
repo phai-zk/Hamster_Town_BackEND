@@ -41,15 +41,15 @@ module.exports = (app) => {
   });
 
   app.post("/quest/data", async (req, res) => {
-    const {rUsername} = req.body;
-    const {rName} = req.body
-    const {rQuestData} = req.body;
+    const { rUsername } = req.body;
+    const { rName } = req.body
+    const { rQuestData } = req.body;
     try {
       const qAccount = await Account.findOne({ username: rUsername });
       await Account.updateOne(
         { username: rUsername },
         {
-          $push : {
+          $push: {
             questData: {
               rName,
               rQuestData,
@@ -57,6 +57,25 @@ module.exports = (app) => {
           }
         }
       )
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  app.get("/quest/data/:rusername/:questName", async (req, res) => {
+    const rusername = req.params.rusername;
+    const rquest = req.params.questName;
+    try {
+      const qAccount = await Account.findOne({ username: rusername });
+      if (qAccount.questData) {
+
+        qAccount.questData.forEach(data => {
+
+          if (data.rName == rquest) {
+            res.send(data);
+          }
+        });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -115,7 +134,7 @@ module.exports = (app) => {
           }
         }
         res.json(quest);
-            // Send a success response with the list of items
+        // Send a success response with the list of items
       } catch (error) {
         // Handle any errors that occur while fetching items
         console.error(error);
