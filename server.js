@@ -26,14 +26,14 @@ mongoose.connect(process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopolo
 
     //try {
     //    
-    //     const accountsWithoutPlayer = await Account.find({ questData: { $exists: false } })
+    //     const accountsWithoutPlayer = await Account.find({ achievement: { $exists: false } })
     //     accountsWithoutPlayer.forEach(async (account) => {
     //         try {
     //             const result = await Account.updateOne(
     //                 { username: account.username },
     //                 {
     //                     $set: {
-    //                        questData: ""
+    //                        achievement: [{}]
     //                     }
     //                 }
     //             )

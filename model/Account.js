@@ -24,6 +24,8 @@ const accountSchema = new Schema({
     fyncid: String,
     quest: [{}],
     questData: Array,
+    achievement: [{}],
+    achievementData: Array,
     lastposition: {
         currentScene: String, x: Number, y: Number, z: Number
     },
