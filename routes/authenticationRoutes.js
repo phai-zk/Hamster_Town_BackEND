@@ -102,7 +102,7 @@ module.exports = (app) => {
       questData: [],
       lastAuthentication: Date.now(),
       lastposition: {
-        currentScene: "Homebond", x: 4.5, y: 16, z: 0
+        currentScene: "Homeland", x: 4.5, y: 16, z: 0
       }
     });
 
