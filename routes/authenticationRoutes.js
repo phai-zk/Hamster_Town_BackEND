@@ -84,26 +84,10 @@ module.exports = (app) => {
       email: rEmail,
       username: rUsername,
       password: rPassword,
-      fyncid: "not have data",
-      iog: [],
-      item: {},
-      player: {
-        equip: {
-          Helmet: { name: "", quantity: 0 },
-          Chestplate: { name: "", quantity: 0 },
-          Legging: { name: "", quantity: 0 },
-          Boot: { name: "", quantity: 0 },
-          Hold: { name: "", quantity: 0 },
-        },
-        stat: { lv: 1 }
-      },
-      rareEarth: 100,
-      quest: [],
-      questData: [],
+      data: "",
       lastAuthentication: Date.now(),
-      lastposition: {
-        currentScene: "Homeland", x: 4.5, y: 16, z: 0
-      }
+      fyncid: "Not have data",
+      currentScene: "Homebond"
     });
 
     // Save the new account to the database
@@ -111,43 +95,6 @@ module.exports = (app) => {
 
     // Send a success response with the new account object
     res.send(newAccount);
-  });
-
-  app.post("/account/dialog", async (req, res) => {
-    const { rUsername } = req.body;
-    const { rData } = req.body;
-    try {
-      const qAccount = await Account.findOne({ username: rUsername });
-      await Account.updateOne(
-        { username: rUsername },
-        {
-          $set: {
-            dialogVariable: rData,
-            },
-          },
-      );
-      res.send(qAccount);
-
-    } catch (err) {
-      // Handle error
-      console.error(err);
-    }
-  });
-
-  app.get("/account/dialog/:rusername", async (req, res) => {
-    const rusername  = req.params.rusername;
-    if (!rusername) {
-      res.send("Error : Not Found");
-    }
-
-    try {
-      const qAccount = await Account.findOne({ username: rusername });
-      res.send(qAccount.dialogVariable);
-    } catch (err) {
-      // Handle error
-      console.error(err);
-      res.send("Error : Not Found");
-    }
   });
 
   app.get("/account/getData/:username", async (req, res) => {
@@ -204,18 +151,15 @@ module.exports = (app) => {
 
   app.post("/account/position/:username", async (req, res) => {
     var rusername = req.params.username; // Retrieve the username from the request body
-    const { rScene, rX, rY, rZ } = req.body;
-    if (!rScene || !rX || !rY || !rZ) {
+    const { rScene} = req.body;
+    if (!rScene) {
       res.send("Error : Not enough info");
       return;
     }
 
     var userAccount = await Account.findOne({ username: rusername });
     if (userAccount) {
-      userAccount.lastposition.currentScene = rScene;
-      userAccount.lastposition.x = rX;
-      userAccount.lastposition.y = rY;
-      userAccount.lastposition.z = rZ;
+      userAccount.currentScene = rScene;
       await userAccount.save();
       res.send(userAccount); //send u
       return;
@@ -223,15 +167,30 @@ module.exports = (app) => {
 
   })
 
-  app.get("/account/Getposition/:username", async (req, res) => {
-    var rusername = req.params.username; // Retrieve the username from the request body
-
-    var userAccount = await Account.findOne({ username: rusername });
-    if (userAccount) {
-      res.send(userAccount.lastposition); //send u
-      return;
+  app.get("/account/getPosition/:username", async (req, res) =>{
+    const rUsername =req.params.username;
+    if (!rUsername) {
+      res.send("Error : Not Found");
     }
-
+    try {
+      const userAccount = await Account.findOne({username: rUsername});
+      res.send(userAccount.currentScene);
+    } catch (err) {
+      console.error(err)
+    }
   })
+  // app.get("/quest/data/:rusername", async (req, res) => {
+  //   const rusername = req.params.rusername;
+  //   if (!rusername) {
+  //     res.send("Error : Not Found");
+  //     return;
+  //   }
+  //   try {
+  //     const qAccount = await Account.findOne({ username: rusername });
+  //     res.send(qAccount.questData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // });
 
 };
