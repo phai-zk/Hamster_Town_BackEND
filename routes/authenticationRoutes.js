@@ -87,7 +87,6 @@ module.exports = (app) => {
       userAccount.data = rdata;
       userAccount.save();
       res.send(userAccount.data);
-
     } catch (error) {
       res.send("Error : " + error);
     }
@@ -105,6 +104,25 @@ module.exports = (app) => {
     try {
       const userAccount = await Account.findOne({ username: rusername });
       res.send(userAccount.data);
+
+    } catch (error) {
+      res.send("Error : " + error);
+    }
+
+  });
+
+  app.get("/account/getScene/:username", async (req,res)=>{
+
+    var rusername = req.params.username;
+    if(!rusername)
+    {
+      res.send("Error : Not enough info");
+      return;
+    }
+
+    try {
+      const userAccount = await Account.findOne({ username: rusername });
+      res.send(userAccount.currentScene);
 
     } catch (error) {
       res.send("Error : " + error);
