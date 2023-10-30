@@ -62,7 +62,7 @@ module.exports = (app) => {
     });
 
     await newAccount.save();
-
+    console.log(newAccount);
     res.send(newAccount);
   });
 
