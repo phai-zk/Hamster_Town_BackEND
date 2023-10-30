@@ -6,23 +6,23 @@ module.exports = (app) => {
 
   app.post("/account/login", async (req, res) => {
 
-    const { rUsername, rPassword } = req.body; 
+    const { rUsername, rPassword } = req.body;
     if (!rUsername || !rPassword) {
       res.send("Error : Invalid credentials");
       return;
     }
 
-    const userAccount = await Account.findOne({ username: rUsername }); 
+    const userAccount = await Account.findOne({ username: rUsername });
     if (userAccount) {
       if (rPassword === userAccount.password) {
         userAccount.lastAuthentication = Date.now();
         await userAccount.save();
-        res.send(userAccount); 
+        res.send(userAccount);
         return;
       }
     }
 
-    res.send("Error : Invalid credentials"); 
+    res.send("Error : Invalid credentials");
   });
 
   app.post("/account/create", async (req, res) => {
@@ -66,11 +66,50 @@ module.exports = (app) => {
     res.send(newAccount);
   });
 
-  app.get("/account/getData/:username", async (req, res) => {
-    var rusername = req.params.username; 
+  app.get("/account/getUserData/:username", async (req, res) => {
+    var rusername = req.params.username;
     var userAccount = await Account.findOne({ username: rusername });
-    res.send(userAccount); 
+    res.send(userAccount);
     return;
+  });
+
+  app.post("/account/gameData/:username/:data", async (req, res) => {
+    var rusername = req.params.username;
+    var rdata = req.params.data;
+
+    if (!rusername || !rdata) {
+      res.send("Error : Not enough info");
+      return;
+    }
+
+    try {
+      const userAccount = await Account.findOne({ username: rusername });
+      userAccount.data = rdata;
+      userAccount.save();
+      res.send(userAccount.data);
+
+    } catch (error) {
+      res.send("Error : " + error);
+    }
+  });
+
+  app.get("/account/getData/:username", async (req, res) => {
+    
+    var rusername = req.params.username;
+    if(!rusername)
+    {
+      res.send("Error : Not enough info");
+      return;
+    }
+
+    try {
+      const userAccount = await Account.findOne({ username: rusername });
+      res.send(userAccount.data);
+
+    } catch (error) {
+      res.send("Error : " + error);
+    }
+
   });
 
 };
