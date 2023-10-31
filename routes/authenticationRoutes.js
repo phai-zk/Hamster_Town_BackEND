@@ -101,23 +101,45 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/account/getData/:username", async (req, res) => {
-    
-    var rusername = req.params.username;
-    if(!rusername)
-    {
-      res.send("Error : Not enough info");
+  app.post("/account/position", async (req, res) => {
+    const { rUsername, rCurrentScene } = req.body;
+
+    if (!rUsername || !rCurrentScene) {
+      res.send("Error: Not enough info");
       return;
     }
 
     try {
-      const userAccount = await Account.findOne({ username: rusername });
-      res.send(userAccount.data);
+      const userAccount = await Account.findOne({ username: rUsername });
+      
+      if (userAccount) {
+        userAccount.currentScene = rCurrentScene;
+        await userAccount.save(); // Fix the typo here
 
+        res.send(userAccount.currentScene);
+      } else {
+        res.send("Error: Not found username");
+      }
     } catch (error) {
-      res.send("Error : " + error);
+      res.send("Error: " + error);
     }
+});
 
+  app.get("/account/getData/:username", async (req, res) => {
+    var rusername = req.params.username;
+    if (!rusername) {
+      res.send("Error: Not enough info");
+      return;
+    }
+  
+    try {
+      const userAccount = await Account.findOne({ username: rusername });
+      const jsonData = JSON.stringify(userAccount.data);
+  
+      res.send(jsonData);
+    } catch (error) {
+      res.send("Error: " + error);
+    }
   });
 
   app.get("/account/getScene/:username", async (req,res)=>{
