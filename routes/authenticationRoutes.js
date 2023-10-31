@@ -51,11 +51,58 @@ module.exports = (app) => {
       return;
     }
 
+    const defaultData = {
+      lastUpdated: Date.now(),
+      rareEarth: 100,
+      months: 0.0,
+      days: 0.0,
+      hours: 0.0,
+      mins: 0.0,
+      seconds: 0.0,
+      timeseconds: 0.0,
+      percentage: 0.0,
+      playerPosition: {
+          keys: [],
+          values: [],
+      },
+      questdata: {
+          keys: [],
+          values: [],
+      },
+      achievementdata: {
+          keys: [],
+          values: [],
+      },
+      eqm: {
+          keys: [],
+          values: [],
+      },
+      inventorydata: {
+          keys: [],
+          values: [],
+      },
+      itemCollected: {
+          keys: [],
+          values: [],
+      },
+      timelinedata: {
+          keys: [],
+          values: [],
+      },
+      setting: {
+        sfx: {},
+        bgm: {},
+      },
+      dialogdata: "",
+      layerPlayer: "",
+      layerShadow: "",
+  };
+
     const newAccount = new Account({
       email: rEmail,
       username: rUsername,
       password: rPassword,
-      data: [],
+      data: defaultData,
       lastAuthentication: Date.now(),
       fyncid: "Not have data",
       currentScene: "Homebond"
