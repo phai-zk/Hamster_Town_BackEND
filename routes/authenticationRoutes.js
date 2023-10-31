@@ -55,15 +55,18 @@ module.exports = (app) => {
       email: rEmail,
       username: rUsername,
       password: rPassword,
-      data: "",
+      data: [],
       lastAuthentication: Date.now(),
       fyncid: "Not have data",
       currentScene: "Homebond"
     });
 
     await newAccount.save();
-    console.log(newAccount);
-    res.send(newAccount);
+    const responseObject = {
+      message: "Account created successfully",
+      user: newAccount,
+    };
+    res.send(responseObject);
   });
 
   app.get("/account/getUserData/:username", async (req, res) => {
@@ -75,19 +78,20 @@ module.exports = (app) => {
 
   app.post("/account/gameData", async (req, res) => {
     const { rUsername, rData } = req.body;
-
+  
     if (!rUsername || !rData) {
       res.send("Error: Not enough info");
       return;
     }
-
+  
     try {
       const userAccount = await Account.findOne({ username: rUsername });
-      
+  
       if (userAccount) {
-        userAccount.data = rData;
-        await userAccount.save(); // Fix the typo here
-
+        const dataObject = JSON.parse(rData); // Parse the JSON data
+        userAccount.data = dataObject; // Set the parsed data to the 'data' field
+        await userAccount.save();
+  
         res.send(userAccount.data);
       } else {
         res.send("Error: Not found username");
@@ -95,7 +99,7 @@ module.exports = (app) => {
     } catch (error) {
       res.send("Error: " + error);
     }
-});
+  });
 
   app.get("/account/getData/:username", async (req, res) => {
     
@@ -133,6 +137,30 @@ module.exports = (app) => {
       res.send("Error : " + error);
     }
 
+  });
+
+  app.post("/account/clearData", async (req, res) => {
+    const { rUsername } = req.body;
+  
+    if (!rUsername) {
+      res.send("Error: Username is required to clear data");
+      return;
+    }
+  
+    try {
+      const userAccount = await Account.findOne({ username: rUsername });
+  
+      if (userAccount) {
+        userAccount.data = {}; // Clear the data by setting it to an empty object
+        await userAccount.save();
+  
+        res.send("Data cleared successfully");
+      } else {
+        res.send("Error: User not found");
+      }
+    } catch (error) {
+      res.send("Error: " + error);
+    }
   });
 
 };

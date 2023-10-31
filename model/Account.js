@@ -5,7 +5,7 @@ const accountSchema = new Schema({
     email: String,
     username: String,
     password: String,
-    data: String,
+    data: Object,
     fyncid: String,
     currentScene: String,
     lastAuthentication: { type: Date, default: Date.now }
