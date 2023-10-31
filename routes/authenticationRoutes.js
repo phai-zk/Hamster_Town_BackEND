@@ -73,24 +73,29 @@ module.exports = (app) => {
     return;
   });
 
-  app.post("/account/gameData/:username/:data", async (req, res) => {
-    var rusername = req.params.username;
-    var rdata = req.params.data;
+  app.post("/account/gameData", async (req, res) => {
+    const { rUsername, rData } = req.body;
 
-    if (!rusername || !rdata) {
-      res.send("Error : Not enough info");
+    if (!rUsername || !rData) {
+      res.send("Error: Not enough info");
       return;
     }
 
     try {
-      const userAccount = await Account.findOne({ username: rusername });
-      userAccount.data = rdata;
-      userAccount.save();
-      res.send(userAccount.data);
+      const userAccount = await Account.findOne({ username: rUsername });
+      
+      if (userAccount) {
+        userAccount.data = rData;
+        await userAccount.save(); // Fix the typo here
+
+        res.send(userAccount.data);
+      } else {
+        res.send("Error: Not found username");
+      }
     } catch (error) {
-      res.send("Error : " + error);
+      res.send("Error: " + error);
     }
-  });
+});
 
   app.get("/account/getData/:username", async (req, res) => {
     
