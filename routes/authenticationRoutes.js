@@ -113,7 +113,9 @@ module.exports = (app) => {
       message: "Account created successfully",
       user: newAccount,
     };
-    res.send(responseObject);
+    console.log(responseObject.user.username);
+    res.send(responseObject.user);
+    // res.send(responseObject);
   });
 
   app.get("/account/getUserData/:username", async (req, res) => {
