@@ -100,8 +100,8 @@ module.exports = (app) => {
         bgm: {},
       },
       dialogdata: "",
-      layerPlayer: "",
-      layerShadow: "",
+      layerPlayer: "Layer2",
+      layerShadow: "Layer2",
     };
   
     const newAccountData = {
