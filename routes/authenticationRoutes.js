@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Account = mongoose.model("accounts");
-const quest = mongoose.model("quests");
 
 module.exports = (app) => {
 
@@ -247,7 +246,7 @@ module.exports = (app) => {
 
       if (userAccount) {
         await userAccount.Account.updateOne(
-          { username: account.username },
+            { username: rUsername },
           {
             $set: {
               data: {}
